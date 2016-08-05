@@ -1,0 +1,41 @@
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Tohidur Rahaman">
+
+    <title>HN Analysis</title>
+    <link href="{% static "css/bootstrap.min.css"%}" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Lato:400,300' rel='stylesheet' type='text/css'>
+    <link href='https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css' rel='stylesheet' type='text/css'>
+    <link href="{% static 'css/home.css' %}" rel="stylesheet">
+    {% block style %}
+    {%endblock%}
+</head>
+<body>
+    <nav class="navbar navbar-default navbar navbar-home navbar-fixed-top header topnav" role="navigation">
+        <div class="navbar-header">
+             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+             </button>
+             <h1><i> HN-Analysis </i></h1>
+        </div>
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        </div>
+        <div class="clearfix"></div>
+    </nav>
+	{% block content %}
+	{% endblock content %}
+</body>
+<script src="{% static "js/jquery.min.js" %}" ></script>
+<script src="{% static "js/bootstrap.min.js" %}" ></script>
+<script src="{% static "js/home.js" %}" ></script>
+</html>
