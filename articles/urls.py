@@ -3,6 +3,7 @@ from django.conf.urls import url
 from .views import (
     get_articles_list,
     home,
+    search_articles,
 )
 
 urlpatterns = [
@@ -14,6 +15,7 @@ urlpatterns = [
     # url(r'^(?P<slug>[\w-]+)/delete$', collection_delete, name='delete'),
     url(r'^$', home, name='home'),
     url(r'^api/v1/get-articles-list$', get_articles_list, name='get_articles_list'),
+    url(r'^api/v1/search-articles$', search_articles, name='search_articles'),
     # url(r'^about$', about, name='about'),
     # url(r'^link/(?P<id>\d+)/delete$', link_delete, name='link_delete' ),
     # url(r'^(?P<slug>[\w-]+)/delete$', collection_delete, name='collection_delete'),

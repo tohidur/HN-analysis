@@ -1,1 +1,31 @@
 {%extends 'base.html'%}
+
+{% block content %}
+	<nav class="navbar navbar-default navbar navbar-home navbar-fixed-top header topnav" role="navigation">
+        <div class="navbar-header col-md-8 col-sm-8 col-xs-12">
+            <a href="" class="navbar-brand topnav toggle-nav hidden-lg hidden-md" id="big-sexy"><i class="fa fa-bars"></i></a>
+            <div class="search-box pull-right col-md-9 col-sm-6 col-xs-4">
+		            <form id="searchForm">
+		            	<i class="fa fa-search icon-search" aria-hidden="true"></i>
+		            	<input type="text" class="input-search" placeholder="Search Links" name="q" value="{{request.GET.q}}" autocomplete="off">
+		            </form>
+		            <div id='search-lists'>
+		            </div>
+	            </div>
+         </div>
+      	<div class="clearfix"></div>
+    </nav>
+    <div id="site-wrapper" class="show-nav">
+	     <div class="main-container mar-t-60">
+
+	    	<div class="collections-list">
+	    		<div  class="card-lists">
+	    			<div class="clearfix"></div>
+	    		</div>
+	    	</div>
+	    </div>
+	   </div>
+	 </div>  
+  </div>
+</div> 
+{%endblock%}

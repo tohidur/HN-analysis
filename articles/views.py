@@ -9,23 +9,27 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 import unirest
 from django.core import serializers
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .serializers import ArticleSerializer
 # Create your views here.
 
 
 def home(request):
 	return render(request, 'home.html')
 
-
+@api_view(['GET'])
 def get_articles_list(request):
 	query_list = Article.objects.all()
-	context = {
-		'articles_list': query_list,
-	}
+	print query_list
+	serializer = ArticleSerializer(query_list, many=True)
 
 	t = threading.Thread(target=fetch_top_articles)
 	t.setDaemon(False)
 	t.start()
 
+	return Response(serializer.data, status=status.HTTP_200_OK)
 
 def fetch_top_articles():
 	top_articles_id = unirest.get("https://community-hacker-news-v1.p.mashape.com/topstories.json?print=pretty",
@@ -87,3 +91,15 @@ def fetch_top_articles():
 	            sentiment_score=sentiment_score,
 	            sentiment_type = sentiment_type,
 	        )
+
+
+
+@api_view(['GET'])
+def search_articles(request):
+    instance = Article.objects.all()
+    query = request.GET.get("q")
+    instance = instance.filter(
+        Q(title__icontains=query)
+    ).distinct()
+    serializer = ArticleSerializer(instance, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
