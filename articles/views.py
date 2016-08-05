@@ -63,7 +63,11 @@ def fetch_top_articles():
 		)
 
 	latest_id = Article.objects.first().article_id
-	if latest_id != top_articles_id.body[0]:
+	try:
+		check = Article.objects.get(article_id=top_articles_id.body[0])
+	except:
+		check = None
+	if (latest_id != top_articles_id.body[0]) and (not check):
 		top_articles = []
 		for x in top_articles_id.body[0:30]:
 			try:
