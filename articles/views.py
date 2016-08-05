@@ -99,7 +99,8 @@ def search_articles(request):
     instance = Article.objects.all()
     query = request.GET.get("q")
     instance = instance.filter(
-        Q(title__icontains=query)
+        Q(title__icontains=query) |
+        Q(author_username__icontains=query)
     ).distinct()
     serializer = ArticleSerializer(instance, many=True)
     return Response(serializer.data, status=status.HTTP_200_OK)
