@@ -11,7 +11,7 @@ class Article(models.Model):
 	title = models.CharField(max_length=300)
 	url = models.CharField(max_length=300, null=True)
 	score = models.IntegerField()
-	description = models.TextField()
+	description = models.TextField(null=True)
 	sentiment_type = models.CharField(max_length=100)
 	sentiment_score = models.IntegerField()
 	update = models.DateTimeField(auto_now=True, auto_now_add=False)

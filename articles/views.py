@@ -19,10 +19,19 @@ from .serializers import ArticleSerializer
 def home(request):
 	return render(request, 'home.html')
 
+
 @api_view(['GET'])
 def get_articles_list(request):
+	"""
+    gets the GET requset for all articles list
+
+    @param:     GET resuest
+    @utility_used: django-rest-framework/serializer, threading(for checking new articles)
+    @API_used: None
+    @return     articles list with details 
+
+    """
 	query_list = Article.objects.all()
-	print query_list
 	serializer = ArticleSerializer(query_list, many=True)
 
 	t = threading.Thread(target=fetch_top_articles)
@@ -31,7 +40,21 @@ def get_articles_list(request):
 
 	return Response(serializer.data, status=status.HTTP_200_OK)
 
+
 def fetch_top_articles():
+	"""
+    1. fetch the top articles list
+    2. check if there is any new articles by comparing the first fetch article and latest saved article in the database
+    3. fetch every article by it's id by using HN API
+	4. claculates each articles setiment type and score using Sentiment Analysis API
+	5. Stores all the dats of each articles in the database.
+
+    @param: None
+    @utility_used:  None
+    @API_used: Hacker News API(Mashape), Sentiment Analysis API(Mashape)
+    @return: None
+
+    """
 	top_articles_id = unirest.get("https://community-hacker-news-v1.p.mashape.com/topstories.json?print=pretty",
 		headers={
 			"X-Mashape-Key": "dpMuURitoYmsh9R2HxFJf6RDDNd4p1TaF1ljsnEp7IJCIE2E3i",
@@ -40,13 +63,11 @@ def fetch_top_articles():
 		)
 
 	latest_id = Article.objects.first().article_id
-	print top_articles_id.body[0]
 	if latest_id != top_articles_id.body[0]:
 		top_articles = []
 		for x in top_articles_id.body[0:30]:
 			try:
 				check_id = Article.objects.get(article_id=x).article_id
-				print check_id
 			except:
 				check_id =None
 				pass
@@ -58,9 +79,6 @@ def fetch_top_articles():
 						}
 					)
 				top_articles.append(article)
-				print "adds"
-			else:
-				print 'already exists'
 		top_articles.reverse()
 
 		for article_object in top_articles:
@@ -96,11 +114,21 @@ def fetch_top_articles():
 
 @api_view(['GET'])
 def search_articles(request):
-    instance = Article.objects.all()
-    query = request.GET.get("q")
-    instance = instance.filter(
-        Q(title__icontains=query) |
-        Q(author_username__icontains=query)
-    ).distinct()
-    serializer = ArticleSerializer(instance, many=True)
-    return Response(serializer.data, status=status.HTTP_200_OK)
+	"""
+	gets the GET requset for article list corresponding search query
+
+	@param: GET resuest(with param search query: q),
+	@utility_used: Q package for search, django-rest-framework/serializer
+	@API_used: None
+	@return: articles lists corresponding to search query 
+
+	"""
+
+	instance = Article.objects.all()
+	query = request.GET.get("q")
+	instance = instance.filter(
+	    Q(title__icontains=query) |
+	    Q(author_username__icontains=query)
+	).distinct()
+	serializer = ArticleSerializer(instance, many=True)
+	return Response(serializer.data, status=status.HTTP_200_OK)
