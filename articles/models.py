@@ -9,7 +9,7 @@ class Article(models.Model):
 	article_id = models.IntegerField()
 	author_username = models.CharField(max_length=120)
 	title = models.CharField(max_length=300)
-	url = models.CharField(max_length=300)
+	url = models.CharField(max_length=300, null=True)
 	score = models.IntegerField()
 	description = models.TextField()
 	sentiment_type = models.CharField(max_length=100)

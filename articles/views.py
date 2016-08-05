@@ -1,29 +1,30 @@
 import os
 import threading
 from .models import Article
-from django.http import HttpResponse, HttpResponseRedirect,Http404
+from django.http import HttpResponse, HttpResponseRedirect, Http404
 import json
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 import unirest
+from django.core import serializers
 # Create your views here.
 
+
+def home(request):
+	return render(request, 'home.html')
+
+
 def get_articles_list(request):
-    """
-    """
-    query_list = Article.objects.all()
-    context = {
-    	'articles_list': query_list,
-    }
-    
-    t = threading.Thread(target=fetch_top_articles)
-    t.setDaemon(False)
-    t.start()
-    
-    return HttpResponse('<h1>Done</h1>')
-    # return render(request, "base.html", context)
+	query_list = Article.objects.all()
+	context = {
+		'articles_list': query_list,
+	}
+
+	t = threading.Thread(target=fetch_top_articles)
+	t.setDaemon(False)
+	t.start()
 
 
 def fetch_top_articles():
