@@ -93,6 +93,9 @@ def fetch_top_articles():
 			score = article_object.body.get('score')
 			description = 'No descirption yet'
 
+			if not url:
+				url = 'https://news.ycombinator.com/item?id='+str(article_id)
+
 			sentiment_analysis = unirest.get("https://twinword-sentiment-analysis.p.mashape.com/analyze/?text="+title, 
 				headers={
 					"X-Mashape-Key": "dpMuURitoYmsh9R2HxFJf6RDDNd4p1TaF1ljsnEp7IJCIE2E3i", 
